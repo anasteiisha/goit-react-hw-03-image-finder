@@ -17,6 +17,7 @@ export class App extends Component {
     page: 1,
     error: null,
     isVisibleLoadMoreBtn: false,
+    isLoading: false,
   };
 
   async componentDidUpdate(_, prevState) {
@@ -24,15 +25,23 @@ export class App extends Component {
       this.state.searchValue !== prevState.searchValue ||
       this.state.page !== prevState.page
     ) {
-      const { hits, totalHits } = await getImages(
-        this.state.searchValue,
-        this.state.page
-      );
+      try {
+        this.setState({ isLoading: true });
 
-      this.setState(prev => ({
-        hits: [...prev.hits, ...makeNormalizeDataImg(hits)],
-        isVisibleLoadMoreBtn: this.state.page < Math.ceil(totalHits / 12),
-      }));
+        const { hits, totalHits } = await getImages(
+          this.state.searchValue,
+          this.state.page
+        );
+
+        this.setState(prev => ({
+          hits: [...prev.hits, ...makeNormalizeDataImg(hits)],
+          isVisibleLoadMoreBtn: this.state.page < Math.ceil(totalHits / 12),
+        }));
+      } catch (error) {
+        this.setState({ error });
+      } finally {
+        this.setState({ isLoading: false });
+      }
     }
   }
 
@@ -60,6 +69,8 @@ export class App extends Component {
     this.setState({ isShowModal: false });
   };
 
+  isLoading = () => {};
+
   render() {
     return (
       <>
@@ -71,7 +82,10 @@ export class App extends Component {
           />
         )}
         {this.state.isVisibleLoadMoreBtn && (
-          <Button onClick={this.handleClickOnBtn} />
+          <Button
+            onClick={this.handleClickOnBtn}
+            isLoading={this.state.isLoading}
+          />
         )}
         {this.state.isShowModal && (
           <Modal
