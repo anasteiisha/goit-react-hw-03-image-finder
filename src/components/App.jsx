@@ -24,7 +24,7 @@ export class App extends Component {
       this.state.searchValue !== prevState.searchValue ||
       this.state.page !== prevState.page
     ) {
-      const { hits, totalHits, per_page } = await getImages(
+      const { hits, totalHits } = await getImages(
         this.state.searchValue,
         this.state.page
       );
