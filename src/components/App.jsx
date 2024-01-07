@@ -31,7 +31,7 @@ export class App extends Component {
 
       this.setState(prev => ({
         hits: [...prev.hits, ...makeNormalizeDataImg(hits)],
-        isVisibleLoadMoreBtn: this.state.page < Math.ceil(totalHits / per_page),
+        isVisibleLoadMoreBtn: this.state.page < Math.ceil(totalHits / 12),
       }));
     }
   }
@@ -62,7 +62,7 @@ export class App extends Component {
 
   render() {
     return (
-      <div>
+      <>
         <Searchbar onSubmit={this.onSubmit} />
         {this.state.hits.length > 0 && (
           <ImageGallery
@@ -80,7 +80,7 @@ export class App extends Component {
             largeImageURL={this.state.largeImageURL}
           />
         )}
-      </div>
+      </>
     );
   }
 }

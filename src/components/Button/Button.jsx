@@ -3,8 +3,10 @@ import * as s from './Button.styled';
 
 export const Button = ({ onClick }) => {
   return (
-    <s.Button onClick={onClick} type="Submit">
-      <Loader />
-    </s.Button>
+    <s.Div>
+      <s.Button onClick={onClick} type="Submit">
+        <Loader />
+      </s.Button>
+    </s.Div>
   );
 };
